@@ -470,7 +470,18 @@ namespace NativeWebSocket
 
                 await m_Socket.ConnectAsync(uri, m_CancellationToken);
                 OnOpen?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(ex.Message);
+                OnClose?.Invoke(WebSocketCloseCode.Abnormal);
+            }
+        }
 
+        public async void Listen()
+        {
+            try
+            {
                 await Receive();
             }
             catch (Exception ex)
